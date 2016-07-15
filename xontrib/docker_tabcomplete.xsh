@@ -1,7 +1,11 @@
+import os
+
 from docker import Client
 
 
-CLI = Client(base_url='unix://var/run/docker.sock')
+BASE_URL = os.environ.get('DOCKER_BASE_URL', 'unix://var/run/docker.sock')
+
+CLI = Client(base_url=BASE_URL)
 
 
 def _get_docker_images(query):
