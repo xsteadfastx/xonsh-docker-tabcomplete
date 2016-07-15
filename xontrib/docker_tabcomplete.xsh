@@ -4,7 +4,7 @@ from docker import Client
 CLI = Client(base_url='unix://var/run/docker.sock')
 
 
-def _get_docker_images():
+def _get_docker_images(query):
     """Lists all local images.
     """
     results = set()
@@ -12,12 +12,16 @@ def _get_docker_images():
 
     for image in images:
 
-        # add id
-        results.add(image['Id'])
-
-        # add tags
         for tag in image['RepoTags']:
-            results.add(tag)
+
+            if query in tag:
+
+                # add tag
+                results.add(tag)
+
+        if query in image['Id']:
+            # add id
+            results.add(image['Id'].split(':')[1])
 
     return results
 
@@ -50,7 +54,7 @@ def docker_completer(prefix, line, begidx, endidx, ctx):
     if 'docker' in line:
 
         if 'run' in line or 'rmi' in line:
-            return _get_docker_images()
+            return _get_docker_images(prefix)
 
         elif 'start' in line or 'rm' in line:
             return _get_docker_containers()
@@ -59,5 +63,5 @@ def docker_completer(prefix, line, begidx, endidx, ctx):
             return _search_docker_images(prefix)
 
 
-__xonsh_completers__["docker"] = docker_completer
+__xonsh_completers__['docker'] = docker_completer
 __xonsh_completers__.move_to_end('docker', last=False)
