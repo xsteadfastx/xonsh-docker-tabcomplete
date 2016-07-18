@@ -18,14 +18,16 @@ def _get_docker_images(query):
 
         for tag in image['RepoTags']:
 
-            if query in tag:
+            if tag.startswith(query):
 
                 # add tag
                 results.add(tag)
 
-        if query in image['Id']:
+        # image id
+        image_id = image['Id'].split(':')[1]
+        if image_id.startswith(query):
             # add id
-            results.add(image['Id'].split(':')[1])
+            results.add(image_id)
 
     return results
 
@@ -54,10 +56,110 @@ def _search_docker_images(query):
     return results
 
 
-def docker_completer(prefix, line, begidx, endidx, ctx):
-    if 'docker' in line:
+def _docker_run(query):
+    """Set for docker run args.
+    """
+    results = set()
 
-        if 'run' in line or 'rmi' in line:
+    args = {
+		'--add-host',
+		'--attach', '-a',
+		'--blkio-weight',
+		'--blkio-weight-device',
+		'--cap-add',
+		'--cap-drop',
+		'--cgroup-parent',
+		'--cidfile',
+		'--cpu-period',
+		'--cpu-quota',
+		'--cpu-shares', '-c',
+		'--device',
+		'--device-read-bps',
+		'--device-read-iops',
+		'--device-write-bps',
+		'--disable-content-trust=false',
+		'--dns-opt',
+		'--dns-search',
+		'--entrypoint',
+		'--env', '-e',
+		'--env-file',
+		'--expose',
+		'--group-add',
+		'--help',
+		'--hostname', '-h',
+		'--interactive', '-i',
+		'--ip',
+		'--ip6',
+		'--ipc',
+		'--isolation',
+		'--kernel-memory',
+		'--label', '-l',
+		'--link',
+		'--link-local-ip',
+		'--log-driver',
+		'--log-opt',
+		'--mac-address',
+		'--memory', '-m',
+		'--memory-reservation',
+		'--memory-swap',
+		'--memory-swappiness',
+		'--name',
+		'--net',
+		'--net-alias',
+		'--oom-kill-disable',
+		'--oom-score-adj',
+		'--pid',
+		'--pids-limit',
+		'--privileged',
+		'--publish', '-p',
+		'--publish-all', '-P',
+		'--read-only',
+		'--restart',
+		'--runtime',
+		'--security-opt',
+		'--shm-size',
+		'--stop-signal',
+		'--storage-opt',
+		'--sysctl',
+		'--tmpfs',
+		'--ulimit',
+		'--user', '-u',
+		'--userns',
+		'--uts',
+		'--volume', '-v',
+		'--volume-driver',
+		'--volumes-from',
+		'--workdir', '-w'
+        '--cpuset-cpus',
+        '--cpuset-mems',
+        '--detach', '-d',
+        '--detach-keys',
+        '--device-write-iops',
+        '--dns',
+        '--health-cmd',
+        '--health-interval',
+        '--health-retries',
+        '--health-timeout',
+        '--label-file',
+        '--no-healthcheck',
+        '--rm',
+        '--sig-proxy=false',
+        '--tty', '-t',
+
+    }
+
+    results = {arg for arg in args if arg.startswith(query)}
+
+    return results
+
+
+def docker_completer(prefix, line, begidx, endidx, ctx):
+    if line.startswith('docker'):
+
+        if 'run' in line:
+            return _docker_run(prefix) | _get_docker_images(prefix)
+
+        elif 'rmi' in line:
             return _get_docker_images(prefix)
 
         elif 'start' in line or 'rm' in line:
