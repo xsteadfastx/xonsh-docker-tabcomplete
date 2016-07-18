@@ -9,7 +9,12 @@ CLI = Client(base_url=BASE_URL)
 
 
 def _get_docker_images(query):
-    """Lists all local images.
+    """Looking for local images.
+
+    :param query: image name lookup
+    :type query: str
+    :returns: all matching images
+    :rtype: set
     """
     results = set()
     images = CLI.images()
@@ -46,6 +51,13 @@ def _get_docker_containers():
 
 def _search_docker_images(query):
     """Searches in the official Docker Hub for images.
+
+    Queries Docker Hub for matching images to pull.
+
+    :param query: Image name to look for
+    :type query: str
+    :returns: Matched images
+    :rtype: set
     """
     results = set()
     images = CLI.search(query)
@@ -58,9 +70,12 @@ def _search_docker_images(query):
 
 def _docker_run(query):
     """Set for docker run args.
-    """
-    results = set()
 
+    :param query: Arg to find
+    :type query: str
+    :returns: Matched arguments
+    :rtype: set
+    """
     args = {
 		'--add-host',
 		'--attach', '-a',
@@ -153,6 +168,44 @@ def _docker_run(query):
     return results
 
 
+def _docker_build(query):
+    """Set for docker build args.
+
+    :param query: Arg to find
+    :type query: str
+    :returns: Matched arguments
+    :rtype: set
+    """
+    args = {
+		'--disable-content-trust=false',
+		'--force-rm',
+		'--no-cache',
+		'--pull',
+		'--quiet', '-q',
+		'--rm',
+        '--build-arg',
+        '--cgroup-parent',
+        '--cpu-period',
+        '--cpu-quota',
+        '--cpu-shares', '-c',
+        '--cpuset-cpus',
+        '--cpuset-mems',
+        '--file', '-f',
+        '--help',
+        '--isolation',
+        '--label',
+        '--memory', '-m',
+        '--memory-swap',
+        '--shm-size',
+        '--tag', '-t',
+        '--ulimit',
+    }
+
+    results = {arg for arg in args if arg.startswith(query)}
+
+    return results
+
+
 def docker_completer(prefix, line, begidx, endidx, ctx):
     if line.startswith('docker'):
 
@@ -167,6 +220,9 @@ def docker_completer(prefix, line, begidx, endidx, ctx):
 
         elif 'pull' in line:
             return _search_docker_images(prefix)
+
+        elif 'build' in line:
+            return _docker_build(prefix)
 
 
 __xonsh_completers__['docker'] = docker_completer
