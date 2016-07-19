@@ -24,8 +24,6 @@ def _get_docker_images(query):
         for tag in image['RepoTags']:
 
             if tag.startswith(query):
-
-                # add tag
                 results.add(tag)
 
         # image id
@@ -37,14 +35,29 @@ def _get_docker_images(query):
     return results
 
 
-def _get_docker_containers():
+def _get_docker_containers(query, all=True):
+    """Get docker containers.
+
+    :param query: container name lookup
+    :param all: all containers or only running containers
+    :type query: str
+    :type all: bool
+    :returns: all matching containers
+    :rtype: set
+    """
     results = set()
-    containers = CLI.containers(all=True)
+    containers = CLI.containers(all=all)
 
     for container in containers:
 
         for name in container['Names']:
-            results.add(name)
+
+            name = name.split('/')[1]
+            if name.startswith(query):
+                results.add(name)
+
+        if container['Id'].startswith(query):
+            results.add(container['Id'])
 
     return results
 
@@ -64,6 +77,88 @@ def _search_docker_images(query):
 
     for image in images:
         results.add(image['name'])
+
+    return results
+
+
+def _docker_build(query):
+    """Set for docker build args.
+
+    :param query: Arg to find
+    :type query: str
+    :returns: Matched arguments
+    :rtype: set
+    """
+    args = {
+		'--disable-content-trust=false',
+		'--force-rm',
+		'--no-cache',
+		'--pull',
+		'--quiet', '-q',
+		'--rm',
+        '--build-arg',
+        '--cgroup-parent',
+        '--cpu-period',
+        '--cpu-quota',
+        '--cpu-shares', '-c',
+        '--cpuset-cpus',
+        '--cpuset-mems',
+        '--file', '-f',
+        '--help',
+        '--isolation',
+        '--label',
+        '--memory', '-m',
+        '--memory-swap',
+        '--shm-size',
+        '--tag', '-t',
+        '--ulimit',
+    }
+
+    results = {arg for arg in args if arg.startswith(query)}
+
+    return results
+
+
+def _docker_commit(query):
+    """Set for docker commit args.
+
+    :param query: Arg to find
+    :type query: str
+    :returns: Matched arguments
+    :rtype: set
+    """
+    args = {
+        '--author', '-a',
+        '--change', '-c',
+        '--help',
+        '--message', '-m',
+        '--pause=true', '-p',
+    }
+
+    results = {arg for arg in args if arg.startswith(query)}
+
+    return results
+
+
+def _docker_exec(query):
+    """Set for docker exec args.
+
+    :param query: Arg to find
+    :type query: str
+    :returns: Matched arguments
+    :rtype: set
+    """
+    args = {
+        '--detach' '-d',
+        '--detach-keys',
+        '--help',
+        '--interactive', '-i',
+        '--privileged',
+        '-t', '--tty',
+        '-u', '--user',
+    }
+
+    results = {arg for arg in args if arg.startswith(query)}
 
     return results
 
@@ -168,61 +263,29 @@ def _docker_run(query):
     return results
 
 
-def _docker_build(query):
-    """Set for docker build args.
-
-    :param query: Arg to find
-    :type query: str
-    :returns: Matched arguments
-    :rtype: set
-    """
-    args = {
-		'--disable-content-trust=false',
-		'--force-rm',
-		'--no-cache',
-		'--pull',
-		'--quiet', '-q',
-		'--rm',
-        '--build-arg',
-        '--cgroup-parent',
-        '--cpu-period',
-        '--cpu-quota',
-        '--cpu-shares', '-c',
-        '--cpuset-cpus',
-        '--cpuset-mems',
-        '--file', '-f',
-        '--help',
-        '--isolation',
-        '--label',
-        '--memory', '-m',
-        '--memory-swap',
-        '--shm-size',
-        '--tag', '-t',
-        '--ulimit',
-    }
-
-    results = {arg for arg in args if arg.startswith(query)}
-
-    return results
-
-
 def docker_completer(prefix, line, begidx, endidx, ctx):
     if line.startswith('docker'):
 
-        if 'run' in line:
+        if 'build' in line:
+            return _docker_build(prefix)
+
+        elif 'commit' in line:
+            return _docker_commit(prefix) | _get_docker_containers(prefix)
+
+        elif 'exec' in line:
+            return _get_docker_containers(prefix, all=False) | _docker_exec(prefix)
+
+        elif 'pull' in line:
+            return _search_docker_images(prefix)
+
+        elif 'run' in line or 'create' in line:
             return _docker_run(prefix) | _get_docker_images(prefix)
 
         elif 'rmi' in line:
             return _get_docker_images(prefix)
 
         elif 'start' in line or 'rm' in line:
-            return _get_docker_containers()
-
-        elif 'pull' in line:
-            return _search_docker_images(prefix)
-
-        elif 'build' in line:
-            return _docker_build(prefix)
+            return _get_docker_containers(prefix)
 
 
 __xonsh_completers__['docker'] = docker_completer
