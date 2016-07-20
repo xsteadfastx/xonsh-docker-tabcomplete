@@ -1,4 +1,5 @@
 import os
+import re
 
 from docker import Client
 
@@ -115,6 +116,41 @@ def _docker_build(query):
         }
 
     results = {arg for arg in args if arg.startswith(query)}
+
+    return results
+
+
+def _docker_commands(query):
+    """Basic docker commands.
+
+    This is used if no other command is specified.
+
+    :param query: Command to find
+    :type query: str
+    :returns: Matched command
+    :rtype: set
+
+    """
+    command_pattern = re.compile(r'^\s+(\w+)\s+.+$')
+    raw_output = $(docker --help)
+    lines = raw_output.splitlines()
+
+    # position of first item in lines
+    for i, j in enumerate(lines):
+        if 'Commands:' in j:
+            first_item = i + 1
+            break
+
+    # position of last item in lines
+    for i, j in enumerate(lines[first_item:], start=first_item):
+        if j == '':
+            last_item = i
+            break
+
+    commands = {re.search(command_pattern, i).group(1)
+                for i in lines[first_item:last_item]}
+
+    results = {command for command in commands if command.startswith(query)}
 
     return results
 
@@ -265,7 +301,10 @@ def _docker_run(query):
 def docker_completer(prefix, line, begidx, endidx, ctx):
     if line.startswith('docker'):
 
-        if 'build' in line:
+        if line == 'docker ':
+            return _docker_commands(prefix)
+
+        elif 'build' in line:
             return _docker_build(prefix)
 
         elif 'commit' in line:
