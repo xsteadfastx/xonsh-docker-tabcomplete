@@ -301,10 +301,7 @@ def _docker_run(query):
 def docker_completer(prefix, line, begidx, endidx, ctx):
     if line.startswith('docker'):
 
-        if line == 'docker ':
-            return _docker_commands(prefix)
-
-        elif 'build' in line:
+        if 'build' in line:
             return _docker_build(prefix)
 
         elif 'commit' in line:
@@ -324,6 +321,9 @@ def docker_completer(prefix, line, begidx, endidx, ctx):
 
         elif 'start' in line or 'rm' in line:
             return _get_docker_containers(prefix)
+
+        else:
+            return _docker_commands(prefix)
 
 
 __xonsh_completers__['docker'] = docker_completer
