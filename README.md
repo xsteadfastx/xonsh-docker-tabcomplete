@@ -6,15 +6,12 @@ This got born from a [problem](https://github.com/xonsh/xonsh/issues/1429) with 
 
 ## Implemented
 
-- [X] docker commands: Completes the basic docker commands
-- [X] `build`
-- [X] `commit`
-- [X] `exec`
-- [X] `pull`: Queries Docker Hub for image name
-- [X] `rmi`
-- [X] `run`
-- [X] `start`
-- [ ] ...
+All arguments and commands for docker version 1.10.
+
+## TODO
+
+- Tests
+- ...
 
 ## Installation
 

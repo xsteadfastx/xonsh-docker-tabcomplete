@@ -1,329 +1,137 @@
 import os
 import re
 
-from docker import Client
+from docker_tabcomplete import queries
 
 
 BASE_URL = os.environ.get('DOCKER_BASE_URL', 'unix://var/run/docker.sock')
-
-CLI = Client(base_url=BASE_URL)
-
-
-def _get_docker_images(query):
-    """Looking for local images.
-
-    :param query: image name lookup
-    :type query: str
-    :returns: all matching images
-    :rtype: set
-    """
-    results = set()
-    images = CLI.images()
-
-    for image in images:
-
-        for tag in image['RepoTags']:
-
-            if tag.startswith(query):
-                results.add(tag)
-
-        # image id
-        image_id = image['Id'].split(':')[1]
-        if image_id.startswith(query):
-            # add id
-            results.add(image_id)
-
-    return results
-
-
-def _get_docker_containers(query, all=True):
-    """Get docker containers.
-
-    :param query: container name lookup
-    :param all: all containers or only running containers
-    :type query: str
-    :type all: bool
-    :returns: all matching containers
-    :rtype: set
-    """
-    results = set()
-    containers = CLI.containers(all=all)
-
-    for container in containers:
-
-        for name in container['Names']:
-
-            name = name.split('/')[1]
-            if name.startswith(query):
-                results.add(name)
-
-        if container['Id'].startswith(query):
-            results.add(container['Id'])
-
-    return results
-
-
-def _search_docker_images(query):
-    """Searches in the official Docker Hub for images.
-
-    Queries Docker Hub for matching images to pull.
-
-    :param query: Image name to look for
-    :type query: str
-    :returns: Matched images
-    :rtype: set
-    """
-    results = set()
-    images = CLI.search(query)
-
-    for image in images:
-        results.add(image['name'])
-
-    return results
-
-
-def _docker_build(query):
-    """Set for docker build args.
-
-    :param query: Arg to find
-    :type query: str
-    :returns: Matched arguments
-    :rtype: set
-    """
-    args = {
-        '--disable-content-trust=false',
-        '--force-rm',
-        '--no-cache',
-        '--pull',
-        '--quiet', '-q',
-        '--rm',
-        '--build-arg',
-        '--cgroup-parent',
-        '--cpu-period',
-        '--cpu-quota',
-        '--cpu-shares', '-c',
-        '--cpuset-cpus',
-        '--cpuset-mems',
-        '--file', '-f',
-        '--help',
-        '--isolation',
-        '--label',
-        '--memory', '-m',
-        '--memory-swap',
-        '--shm-size',
-        '--tag', '-t',
-        '--ulimit',
-        }
-
-    results = {arg for arg in args if arg.startswith(query)}
-
-    return results
-
-
-def _docker_commands(query):
-    """Basic docker commands.
-
-    This is used if no other command is specified.
-
-    :param query: Command to find
-    :type query: str
-    :returns: Matched command
-    :rtype: set
-
-    """
-    command_pattern = re.compile(r'^\s+(\w+)\s+.+$')
-    raw_output = $(docker --help)
-    lines = raw_output.splitlines()
-
-    # position of first item in lines
-    for i, j in enumerate(lines):
-        if 'Commands:' in j:
-            first_item = i + 1
-            break
-
-    # position of last item in lines
-    for i, j in enumerate(lines[first_item:], start=first_item):
-        if j == '':
-            last_item = i
-            break
-
-    commands = {re.search(command_pattern, i).group(1)
-                for i in lines[first_item:last_item]}
-
-    results = {command for command in commands if command.startswith(query)}
-
-    return results
-
-
-def _docker_commit(query):
-    """Set for docker commit args.
-
-    :param query: Arg to find
-    :type query: str
-    :returns: Matched arguments
-    :rtype: set
-    """
-    args = {
-        '--author', '-a',
-        '--change', '-c',
-        '--help',
-        '--message', '-m',
-        '--pause=true', '-p',
-    }
-
-    results = {arg for arg in args if arg.startswith(query)}
-
-    return results
-
-
-def _docker_exec(query):
-    """Set for docker exec args.
-
-    :param query: Arg to find
-    :type query: str
-    :returns: Matched arguments
-    :rtype: set
-    """
-    args = {
-        '--detach' '-d',
-        '--detach-keys',
-        '--help',
-        '--interactive', '-i',
-        '--privileged',
-        '-t', '--tty',
-        '-u', '--user',
-    }
-
-    results = {arg for arg in args if arg.startswith(query)}
-
-    return results
-
-
-def _docker_run(query):
-    """Set for docker run args.
-
-    :param query: Arg to find
-    :type query: str
-    :returns: Matched arguments
-    :rtype: set
-    """
-    args = {
-        '--add-host',
-        '--attach', '-a',
-        '--blkio-weight',
-        '--blkio-weight-device',
-        '--cap-add',
-        '--cap-drop',
-        '--cgroup-parent',
-        '--cidfile',
-        '--cpu-period',
-        '--cpu-quota',
-        '--cpu-shares', '-c',
-        '--device',
-        '--device-read-bps',
-        '--device-read-iops',
-        '--device-write-bps',
-        '--disable-content-trust=false',
-        '--dns-opt',
-        '--dns-search',
-        '--entrypoint',
-        '--env', '-e',
-        '--env-file',
-        '--expose',
-        '--group-add',
-        '--help',
-        '--hostname', '-h',
-        '--interactive', '-i',
-        '--ip',
-        '--ip6',
-        '--ipc',
-        '--isolation',
-        '--kernel-memory',
-        '--label', '-l',
-        '--link',
-        '--link-local-ip',
-        '--log-driver',
-        '--log-opt',
-        '--mac-address',
-        '--memory', '-m',
-        '--memory-reservation',
-        '--memory-swap',
-        '--memory-swappiness',
-        '--name',
-        '--net',
-        '--net-alias',
-        '--oom-kill-disable',
-        '--oom-score-adj',
-        '--pid',
-        '--pids-limit',
-        '--privileged',
-        '--publish', '-p',
-        '--publish-all', '-P',
-        '--read-only',
-        '--restart',
-        '--runtime',
-        '--security-opt',
-        '--shm-size',
-        '--stop-signal',
-        '--storage-opt',
-        '--sysctl',
-        '--tmpfs',
-        '--ulimit',
-        '--user', '-u',
-        '--userns',
-        '--uts',
-        '--volume', '-v',
-        '--volume-driver',
-        '--volumes-from',
-        '--workdir', '-w'
-        '--cpuset-cpus',
-        '--cpuset-mems',
-        '--detach', '-d',
-        '--detach-keys',
-        '--device-write-iops',
-        '--dns',
-        '--health-cmd',
-        '--health-interval',
-        '--health-retries',
-        '--health-timeout',
-        '--label-file',
-        '--no-healthcheck',
-        '--rm',
-        '--sig-proxy=false',
-        '--tty', '-t',
-    }
-
-    results = {arg for arg in args if arg.startswith(query)}
-
-    return results
 
 
 def docker_completer(prefix, line, begidx, endidx, ctx):
     if line.startswith('docker'):
 
-        if 'build' in line:
-            return _docker_build(prefix)
+        if 'attach' in line:
+            return queries.docker_args(prefix, $(docker attach --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
+
+        elif 'build' in line:
+            return queries.docker_args(prefix, $(docker build --help))
 
         elif 'commit' in line:
-            return _docker_commit(prefix) | _get_docker_containers(prefix)
+            return queries.docker_args(prefix, $(docker commit --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'cp' in line:
+            return queries.docker_args(prefix, $(docker cp --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'create' in line:
+            return queries.docker_args(prefix, $(docker create --help)) | queries.docker_images(BASE_URL, prefix)
+
+        elif 'diff' in line:
+            return queries.docker_args(prefix, $(docker diff --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'events' in line:
+            return queries.docker_args(prefix, $(docker events --help))
 
         elif 'exec' in line:
-            return _get_docker_containers(prefix, all=False) | _docker_exec(prefix)
+            return queries.docker_args(prefix, $(docker exec --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
+
+        elif 'export' in line:
+            return queries.docker_args(prefix, $(docker export --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'history' in line:
+            return queries.docker_args(prefix, $(docker history --help)) | queries.docker_images(BASE_URL, prefix)
+
+        elif 'images' in line:
+            return queries.docker_args(prefix, $(docker images --help))
+
+        elif 'import' in line:
+            return queries.docker_args(prefix, $(docker import --help))
+
+        elif 'info' in line:
+            return queries.docker_args(prefix, $(docker info --help))
+
+        elif 'inspect' in line:
+            return queries.docker_args(prefix, $(docker inspect --help)) | queries.docker_images(BASE_URL, prefix) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'kill' in line:
+            return queries.docker_args(prefix, $(docker kill --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
+
+        elif 'load' in line:
+            return queries.docker_args(prefix, $(docker load --help))
+
+        elif 'login' in line:
+            return queries.docker_args(prefix, $(docker login --help))
+
+        elif 'logout' in line:
+            return queries.docker_args(prefix, $(docker logout --help))
+
+        elif 'logs' in line:
+            return queries.docker_args(prefix, $(docker logs --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'network' in line:
+            return queries.docker_args(prefix, $(docker network --help)) | queries.docker_commands(prefix, $(docker network --help))
+
+        elif 'pause' in line:
+            return queries.docker_args(prefix, $(docker pause --help))
+
+        elif 'port' in line:
+            return queries.docker_args(prefix, $(docker port --help)) | queries.docker_containers(BASE_URL, prefix)
 
         elif 'pull' in line:
-            return _search_docker_images(prefix)
+            return queries.docker_args(prefix, $(docker pull --help)) | queries.dockerhub_images(BASE_URL, prefix)
 
-        elif 'run' in line or 'create' in line:
-            return _docker_run(prefix) | _get_docker_images(prefix)
+        elif 'push' in line:
+            return queries.docker_args(prefix, $(docker pull --help)) | queries.docker_images(BASE_URL, prefix)
+
+        elif 'rename' in line:
+            return queries.docker_args(prefix, $(docker rename --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'restart' in line:
+            return queries.docker_args(prefix, $(docker restart --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
+
+        elif 'rm' in line:
+            return queries.docker_args(prefix, $(docker rm --help)) | queries.docker_containers(BASE_URL, prefix)
 
         elif 'rmi' in line:
-            return _get_docker_images(prefix)
+            return queries.docker_args(prefix, $(docker rmi --help)) | queries.docker_images(BASE_URL, prefix)
 
-        elif 'start' in line or 'rm' in line:
-            return _get_docker_containers(prefix)
+        elif 'run' in line:
+            return queries.docker_args(prefix, $(docker run --help)) | queries.docker_images(BASE_URL, prefix)
+
+        elif 'save' in line:
+            return queries.docker_args(prefix, $(docker save --help)) | queries.docker_images(BASE_URL, prefix)
+
+        elif 'search' in line:
+            return queries.docker_args(prefix, $(docker search --help))
+
+        elif 'start' in line:
+            return queries.docker_args(prefix, $(docker start --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'stats' in line:
+            return queries.docker_args(prefix, $(docker stats --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'stop' in line:
+            return queries.docker_args(prefix, $(docker stop --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
+
+        elif 'tag' in line:
+            return queries.docker_args(prefix, $(docker tag --help)) | queries.docker_images(BASE_URL, prefix)
+
+        elif 'unpause' in line:
+            return queries.docker_args(prefix, $(docker unpause --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
+
+        elif 'update' in line:
+            return queries.docker_args(prefix, $(docker update --help)) | queries.docker_containers(BASE_URL, prefix)
+
+        elif 'version' in line:
+            return queries.docker_args(prefix, $(docker version --help))
+
+        elif 'volume' in line:
+            return queries.docker_args(prefix, $(docker volume --help)) | queries.docker_commands(prefix, $(docker volume --help))
+
+        elif 'wait' in line:
+            return queries.docker_args(prefix, $(docker wait --help)) | queries.docker_containers(BASE_URL, prefix, all=False)
 
         else:
-            return _docker_commands(prefix)
+            return queries.docker_commands(prefix, $(docker --help))
 
 
 __xonsh_completers__['docker'] = docker_completer
