@@ -11,7 +11,9 @@ def help_arguments(body):
     """
     args = set()
     arg_pattern = re.compile(
-        r'((?:-\w+)|(?:--\w+(?:-?\w+)+(?:=?(?:true|false|SIGTERM|\[\])?)))')
+        (r'^((?:-\w+)|'
+         r'(?:--\w+(?:-?\w+)+(?:=?(?:true|false|SIGTERM|\[\]|yes|no)?)))')
+    )
 
     for line in body.splitlines():
 

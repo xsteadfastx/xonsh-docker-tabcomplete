@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='xonsh-docker-tabcomplete',
-    version='0.1.2',
+    version='0.1.3',
     license='MIT',
     url='https://github.com/xsteadfastx/xonsh-docker-tabcomplete',
     description='docker tabcomplete support for the Xonsh shell',
