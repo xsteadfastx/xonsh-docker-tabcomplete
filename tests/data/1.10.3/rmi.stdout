@@ -1,0 +1,8 @@
+
+Usage:	docker rmi [OPTIONS] IMAGE [IMAGE...]
+
+Remove one or more images
+
+  -f, --force        Force removal of the image
+  --help             Print usage
+  --no-prune         Do not delete untagged parents

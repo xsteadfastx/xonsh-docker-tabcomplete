@@ -1,0 +1,26 @@
+{
+        "arguments": [
+                "--build-arg=[]",
+                "--cpu-shares",
+                "--cgroup-parent",
+                "--cpu-period",
+                "--cpu-quota",
+                "--cpuset-cpus",
+                "--cpuset-mems",
+                "--disable-content-trust=true",
+                "-f", "--file",
+                "--force-rm",
+                "--help",
+                "--isolation",
+                "-m", "--memory",
+                "--memory-swap",
+                "--no-cache",
+                "--pull",
+                "-q", "--quiet",
+                "--rm=true",
+                "--shm-size",
+                "-t", "--tag=[]",
+                "--ulimit=[]"
+        ],
+        "commands": []
+}

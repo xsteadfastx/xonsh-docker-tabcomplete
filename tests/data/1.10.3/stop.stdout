@@ -1,0 +1,8 @@
+
+Usage:	docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+Stop a running container.
+Sending SIGTERM and then SIGKILL after a grace period
+
+  --help             Print usage
+  -t, --time=10      Seconds to wait for stop before killing it

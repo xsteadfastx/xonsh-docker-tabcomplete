@@ -1,0 +1,6 @@
+
+Usage:	docker info [OPTIONS]
+
+Display system-wide information
+
+  --help             Print usage

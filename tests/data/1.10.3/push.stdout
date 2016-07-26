@@ -1,0 +1,7 @@
+
+Usage:	docker push [OPTIONS] NAME[:TAG]
+
+Push an image or a repository to a registry
+
+  --disable-content-trust=true    Skip image signing
+  --help                          Print usage

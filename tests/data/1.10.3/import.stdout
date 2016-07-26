@@ -1,0 +1,8 @@
+
+Usage:	docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+
+Import the contents from a tarball to create a filesystem image
+
+  -c, --change=[]    Apply Dockerfile instruction to the created image
+  --help             Print usage
+  -m, --message      Set commit message for imported image

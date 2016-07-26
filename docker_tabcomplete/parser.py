@@ -1,7 +1,7 @@
 import re
 
 
-def help_arguments(body):
+def arguments(body):
     """Takes a docker help body and parses its arguments.
 
     :param body: Body from `docker <command> --help`

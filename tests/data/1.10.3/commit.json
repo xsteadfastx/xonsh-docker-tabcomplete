@@ -1,0 +1,10 @@
+{
+        "arguments": [
+                "-a", "--author",
+                "-c", "--change=[]",
+                "--help",
+                "-m", "--message",
+                "-p", "--pause=true"
+        ],
+        "commands" : []
+}

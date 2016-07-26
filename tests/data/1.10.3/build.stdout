@@ -1,0 +1,26 @@
+
+Usage:	docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+
+  --build-arg=[]                  Set build-time variables
+  --cpu-shares                    CPU shares (relative weight)
+  --cgroup-parent                 Optional parent cgroup for the container
+  --cpu-period                    Limit the CPU CFS (Completely Fair Scheduler) period
+  --cpu-quota                     Limit the CPU CFS (Completely Fair Scheduler) quota
+  --cpuset-cpus                   CPUs in which to allow execution (0-3, 0,1)
+  --cpuset-mems                   MEMs in which to allow execution (0-3, 0,1)
+  --disable-content-trust=true    Skip image verification
+  -f, --file                      Name of the Dockerfile (Default is 'PATH/Dockerfile')
+  --force-rm                      Always remove intermediate containers
+  --help                          Print usage
+  --isolation                     Container isolation level
+  -m, --memory                    Memory limit
+  --memory-swap                   Swap limit equal to memory plus swap: '-1' to enable unlimited swap
+  --no-cache                      Do not use cache when building the image
+  --pull                          Always attempt to pull a newer version of the image
+  -q, --quiet                     Suppress the build output and print image ID on success
+  --rm=true                       Remove intermediate containers after a successful build
+  --shm-size                      Size of /dev/shm, default value is 64MB
+  -t, --tag=[]                    Name and optionally a tag in the 'name:tag' format
+  --ulimit=[]                     Ulimit options

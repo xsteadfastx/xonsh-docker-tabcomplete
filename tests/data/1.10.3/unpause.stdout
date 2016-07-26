@@ -1,0 +1,6 @@
+
+Usage:	docker unpause [OPTIONS] CONTAINER [CONTAINER...]
+
+Unpause all processes within a container
+
+  --help             Print usage

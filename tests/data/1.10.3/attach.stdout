@@ -1,0 +1,9 @@
+
+Usage:	docker attach [OPTIONS] CONTAINER
+
+Attach to a running container
+
+  --detach-keys       Override the key sequence for detaching a container
+  --help              Print usage
+  --no-stdin          Do not attach STDIN
+  --sig-proxy=true    Proxy all received signals to the process

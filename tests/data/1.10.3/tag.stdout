@@ -1,0 +1,6 @@
+
+Usage:	docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+
+Tag an image into a repository
+
+  --help             Print usage

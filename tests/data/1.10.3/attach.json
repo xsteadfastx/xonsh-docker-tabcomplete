@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "--detach-keys",
+                "--help",
+                "--no-stdin",
+                "--sig-proxy=true"
+        ],
+        "commands": []
+}

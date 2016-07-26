@@ -1,0 +1,6 @@
+
+Usage:	docker rename [OPTIONS] OLD_NAME NEW_NAME
+
+Rename a container
+
+  --help             Print usage

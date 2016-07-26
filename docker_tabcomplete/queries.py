@@ -108,7 +108,7 @@ def docker_args(query, body):
     :returns: Matched arguments
     :rtype: set
     """
-    return _query_set(query, parser.help_arguments(body))
+    return _query_set(query, parser.arguments(body))
 
 
 def docker_commands(query, body):

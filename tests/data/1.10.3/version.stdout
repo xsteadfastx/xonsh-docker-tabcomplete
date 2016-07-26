@@ -1,0 +1,7 @@
+
+Usage:	docker version [OPTIONS]
+
+Show the Docker version information
+
+  -f, --format       Format the output using the given go template
+  --help             Print usage

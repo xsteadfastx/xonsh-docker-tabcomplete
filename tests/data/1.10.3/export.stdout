@@ -1,0 +1,7 @@
+
+Usage:	docker export [OPTIONS] CONTAINER
+
+Export a container's filesystem as a tar archive
+
+  --help             Print usage
+  -o, --output       Write to a file, instead of STDOUT

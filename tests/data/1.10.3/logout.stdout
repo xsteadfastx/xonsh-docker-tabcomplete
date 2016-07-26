@@ -1,0 +1,7 @@
+
+Usage:	docker logout [OPTIONS] [SERVER]
+
+Log out from a Docker registry.
+If no server is specified, the default is defined by the daemon.
+
+  --help             Print usage

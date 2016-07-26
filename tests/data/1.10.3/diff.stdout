@@ -1,0 +1,6 @@
+
+Usage:	docker diff [OPTIONS] CONTAINER
+
+Inspect changes on a container's filesystem
+
+  --help             Print usage

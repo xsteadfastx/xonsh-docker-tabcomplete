@@ -1,0 +1,7 @@
+{
+        "arguments": [
+                "--help",
+                "-L", "--follow-link"
+        ],
+        "commands": []
+}
