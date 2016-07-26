@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "-f", "--filter=[]",
+                "--help",
+                "--since",
+                "--until"
+        ],
+        "commands": []
+}

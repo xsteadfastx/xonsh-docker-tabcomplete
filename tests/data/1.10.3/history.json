@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "-H", "--human=true",
+                "--help",
+                "--no-trunc",
+                "-q", "--quiet"
+        ],
+        "commands": []
+}

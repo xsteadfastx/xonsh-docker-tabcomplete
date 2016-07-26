@@ -1,0 +1,12 @@
+{
+        "arguments": [
+                "-d", "--detach",
+                "--detach-keys",
+                "--help",
+                "-i", "--interactive",
+                "--privileged",
+                "-t", "--tty",
+                "-u", "--user"
+        ],
+        "commands": []
+}
