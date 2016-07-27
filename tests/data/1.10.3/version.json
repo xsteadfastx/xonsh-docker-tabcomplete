@@ -1,0 +1,7 @@
+{
+        "arguments": [
+                "-f", "--format",
+                "--help"
+        ],
+        "commands": []
+}

@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "-a", "--attach",
+                "--detach-keys",
+                "--help",
+                "-i", "--interactive"
+        ],
+        "commands": []
+}

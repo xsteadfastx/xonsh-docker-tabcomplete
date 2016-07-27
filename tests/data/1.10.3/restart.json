@@ -1,0 +1,7 @@
+{
+        "arguments": [
+                "--help",
+                "-t", "--time=10"
+        ],
+        "commands": []
+}

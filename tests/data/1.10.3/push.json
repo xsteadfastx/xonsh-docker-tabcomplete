@@ -1,0 +1,7 @@
+{
+        "arguments": [
+                "--disable-content-trust=true",
+                "--help"
+        ],
+        "commands": []
+}

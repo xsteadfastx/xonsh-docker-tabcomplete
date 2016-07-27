@@ -1,0 +1,8 @@
+{
+        "arguments": [
+                "-a", "--all",
+                "--help",
+                "--no-stream"
+        ],
+        "commands": []
+}

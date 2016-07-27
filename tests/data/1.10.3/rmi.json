@@ -1,0 +1,8 @@
+{
+        "arguments": [
+                "-f", "--force",
+                "--help",
+                "--no-prune"
+        ],
+        "commands": []
+}

@@ -1,0 +1,12 @@
+{
+        "arguments": [
+                "--help"
+        ],
+        "commands": [
+                "create",
+                "inspect",
+                "ls",
+                "rm"
+
+        ]
+}

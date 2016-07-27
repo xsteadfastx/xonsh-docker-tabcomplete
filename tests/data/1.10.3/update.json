@@ -1,0 +1,16 @@
+{
+        "arguments": [
+                "--blkio-weight",
+                "--cpu-shares",
+                "--cpu-period",
+                "--cpu-quota",
+                "--cpuset-cpus",
+                "--cpuset-mems",
+                "--help",
+                "--kernel-memory",
+                "-m", "--memory",
+                "--memory-reservation",
+                "--memory-swap"
+        ],
+        "commands": []
+}

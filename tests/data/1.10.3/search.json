@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "--automated",
+                "--help",
+                "--no-trunc",
+                "-s", "--stars"
+        ],
+        "commands": []
+}
