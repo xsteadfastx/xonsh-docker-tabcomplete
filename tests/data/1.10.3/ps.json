@@ -1,0 +1,14 @@
+{
+        "arguments": [
+                "-a", "--all",
+                "-f", "--filter=[]",
+                "--format",
+                "--help",
+                "-l", "--latest",
+                "-n=-1",
+                "--no-trunc",
+                "-q", "--quiet",
+                "-s", "--size"
+        ],
+        "commands": []
+}

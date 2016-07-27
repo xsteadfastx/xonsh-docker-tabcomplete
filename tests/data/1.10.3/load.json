@@ -1,0 +1,7 @@
+{
+        "arguments": [
+                "--help",
+                "-i", "--input"
+        ],
+        "commands": []
+}

@@ -1,0 +1,13 @@
+{
+        "arguments": [
+                "--help"
+        ],
+        "commands": [
+                "connect",
+                "disconnect",
+                "inspect",
+                "ls",
+                "rm",
+                "create"
+        ]
+}

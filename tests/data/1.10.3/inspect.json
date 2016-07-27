@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "-f", "--format",
+                "--help",
+                "-s", "--size",
+                "--type"
+        ],
+        "commands": []
+}

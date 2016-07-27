@@ -1,0 +1,8 @@
+{
+        "arguments": [
+                "-c", "--change=[]",
+                "--help",
+                "-m", "--message"
+        ],
+        "commands": []
+}

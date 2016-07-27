@@ -1,0 +1,9 @@
+{
+        "arguments": [
+                "-e", "--email",
+                "--help",
+                "-p", "--password",
+                "-u", "--username"
+        ],
+        "commands": []
+}

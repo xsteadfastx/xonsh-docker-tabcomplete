@@ -1,0 +1,12 @@
+{
+        "arguments": [
+                "-a", "--all",
+                "--digests",
+                "-f", "--filter=[]",
+                "--format",
+                "--help",
+                "--no-trunc",
+                "-q", "--quiet"
+        ],
+        "commands": []
+}

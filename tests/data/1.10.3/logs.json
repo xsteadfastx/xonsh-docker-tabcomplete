@@ -1,0 +1,10 @@
+{
+        "arguments": [
+                "-f", "--follow",
+                "--help",
+                "--since",
+                "-t", "--timestamps",
+                "--tail=all"
+        ],
+        "commands": []
+}
