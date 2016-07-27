@@ -1,4 +1,5 @@
 # xonsh-docker-tabcomplete
+[![Build Status](https://travis-ci.org/xsteadfastx/xonsh-docker-tabcomplete.svg?branch=master)](https://travis-ci.org/xsteadfastx/xonsh-docker-tabcomplete)
 
 This provides tab completion for [docker](https://www.docker.com/) in [xonsh](http://xon.).
 
