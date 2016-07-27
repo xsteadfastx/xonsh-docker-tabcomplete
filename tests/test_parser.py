@@ -25,3 +25,17 @@ def test_arguments(command):
         test_data = json.load(f)
 
     assert parser.arguments(stdout) == set(test_data['arguments'])
+
+
+@pytest.mark.parametrize('command', COMMANDS)
+def test_commands(command):
+
+    # load files
+    with open('{}.stdout'.format(command)) as f:
+        stdout = f.read()
+
+    with open('{}.json'.format(command)) as f:
+        test_data = json.load(f)
+
+    if test_data['commands']:
+        assert parser.commands(stdout) == set(test_data['commands'])
