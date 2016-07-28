@@ -1,5 +1,8 @@
 # xonsh-docker-tabcomplete
 [![Build Status](https://travis-ci.org/xsteadfastx/xonsh-docker-tabcomplete.svg?branch=master)](https://travis-ci.org/xsteadfastx/xonsh-docker-tabcomplete)
+[![PyPI](https://img.shields.io/pypi/v/xonsh-docker-tabcomplete.svg?maxAge=2592000)](https://pypi.python.org/pypi/xonsh-docker-tabcomplete)
+[![PyPI](https://img.shields.io/pypi/pyversions/xonsh-docker-tabcomplete.svg?maxAge=2592000)](https://pypi.python.org/pypi/xonsh-docker-tabcomplete)
+[![license](https://img.shields.io/github/license/xsteadfastx/xonsh-docker-tabcomplete.svg?maxAge=2592000)](https://github.com/xsteadfastx/xonsh-docker-tabcomplete)
 
 This provides tab completion for [docker](https://www.docker.com/) in [xonsh](http://xon.).
 
@@ -8,11 +11,6 @@ This got born from a [problem](https://github.com/xonsh/xonsh/issues/1429) with 
 ## Implemented
 
 All arguments and commands for docker version 1.10.
-
-## TODO
-
-- Tests
-- ...
 
 ## Installation
 

@@ -20,6 +20,9 @@ setup(
         'Intended Audience :: End Users/Desktop',
         'Operating System :: POSIX',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'License :: OSI Approved :: MIT License',
     ]
 )
