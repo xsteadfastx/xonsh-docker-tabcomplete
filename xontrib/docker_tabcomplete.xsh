@@ -138,5 +138,5 @@ def docker_completer(prefix, line, begidx, endidx, ctx):
         return queries.docker_commands(prefix, $(docker --help))
 
 
-__xonsh_completers__['docker'] = docker_completer
-__xonsh_completers__.move_to_end('docker', last=False)
+__xonsh__.completers['docker'] = docker_completer
+__xonsh__.completers.move_to_end('docker', last=False)
